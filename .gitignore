@@ -1,0 +1,25 @@
+# Environment variables and secrets
+.env
+.env.*
+!config/.env.example
+*.pem
+*.key
+credentials.json
+
+# Dependencies
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temp files
+*.tmp
