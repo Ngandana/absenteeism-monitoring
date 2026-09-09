@@ -1,0 +1,77 @@
+{
+  "scenario": "Correction made after an alert was sent",
+  "scenarioRef": "docs/02-requirements-engineering-specification.md, section 8, row 6",
+  "description": "Case evidence and count update; no duplicate alert sent.",
+  "context": {
+    "finalisationWindowPassed": true,
+    "activeRule": {
+      "ruleId": "rule_placeholder_4_in_30",
+      "note": "PLACEHOLDER ONLY — real threshold model is an open question, see docs/03-open-decisions-log.md",
+      "thresholdDays": 4,
+      "periodDays": 30
+    },
+    "correctionEvent": {
+      "recordId": "rec_int_005_2026-01-10",
+      "reason": "Leave approved retroactively in Jibble after the alert was already sent",
+      "correctedBy": "HR admin",
+      "correctedAt": "2026-01-25T09:00:00+02:00"
+    }
+  },
+  "input": {
+    "dailyAttendance": [
+      {
+        "recordId": "rec_int_005_2026-01-10",
+        "internId": "int_005",
+        "internName": "Nomvula K.",
+        "date": "2026-01-10",
+        "source": { "scheduledToWork": true, "isPublicHolidayOrRestDay": false, "leave": { "status": "approved", "leaveType": "sick", "requestId": "leave_req_0090" }, "attendance": { "recorded": false, "clockIn": null, "clockOut": null }, "correction": { "unresolved": false, "note": "Retroactive leave approval" }, "syncStatus": "ok" },
+        "classification": "Qualifying Absence",
+        "countsTowardThreshold": true
+      }
+    ],
+    "otherCycleRecords": [
+      { "recordId": "rec_int_005_2026-01-03", "internId": "int_005", "date": "2026-01-03", "classification": "Qualifying Absence", "countsTowardThreshold": true },
+      { "recordId": "rec_int_005_2026-01-17", "internId": "int_005", "date": "2026-01-17", "classification": "Qualifying Absence", "countsTowardThreshold": true },
+      { "recordId": "rec_int_005_2026-01-24", "internId": "int_005", "date": "2026-01-24", "classification": "Qualifying Absence", "countsTowardThreshold": true }
+    ],
+    "monitoringCycle": {
+      "cycleId": "cycle_int_005_2026-01-01",
+      "internId": "int_005",
+      "windowStart": "2026-01-01",
+      "windowEnd": "2026-01-30",
+      "runningCount": 4,
+      "thresholdReached": true
+    },
+    "alertCase": {
+      "caseId": "case_int_005_0001",
+      "internId": "int_005",
+      "ruleId": "rule_placeholder_4_in_30",
+      "count": 4,
+      "qualifyingDates": ["2026-01-03", "2026-01-10", "2026-01-17", "2026-01-24"],
+      "status": "Open",
+      "emailsSent": 1
+    }
+  },
+  "expected": {
+    "dailyAttendance": [
+      {
+        "recordId": "rec_int_005_2026-01-10",
+        "classification": "Approved Leave",
+        "countsTowardThreshold": false
+      }
+    ],
+    "monitoringCycle": {
+      "cycleId": "cycle_int_005_2026-01-01",
+      "runningCount": 3,
+      "thresholdReached": false
+    },
+    "alertCase": {
+      "caseId": "case_int_005_0001",
+      "count": 3,
+      "qualifyingDates": ["2026-01-03", "2026-01-17", "2026-01-24"],
+      "status": "Open",
+      "emailsSent": 1
+    },
+    "notes": "Retroactive leave approval reclassifies 2026-01-10 and drops the running count below threshold. FR-13 requires the existing case's evidence and count to be recalculated in place. emailsSent must stay at 1 — the correction never triggers a second email (FR-09). Closing or dismissing the now-under-threshold case is a human decision (FR-12), not automatic. The new runningCount of 3 comes from combining this reclassified record with input.otherCycleRecords (2026-01-03, 2026-01-17, 2026-01-24), which are unaffected by the correction and still count."
+  }
+}

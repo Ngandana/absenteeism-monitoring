@@ -1,0 +1,60 @@
+{
+  "scenario": "Daily sync runs twice by accident",
+  "scenarioRef": "docs/02-requirements-engineering-specification.md, section 8, row 8",
+  "description": "No duplicate daily records, cases, or emails.",
+  "context": {
+    "finalisationWindowPassed": true
+  },
+  "input": {
+    "syncRuns": [
+      {
+        "runId": "sync_2026-01-15_0700",
+        "date": "2026-01-15",
+        "startedAt": "2026-01-15T07:00:00+02:00",
+        "result": "success",
+        "internsAffected": ["int_007"]
+      },
+      {
+        "runId": "sync_2026-01-15_0712",
+        "date": "2026-01-15",
+        "startedAt": "2026-01-15T07:12:00+02:00",
+        "result": "success",
+        "internsAffected": ["int_007"],
+        "note": "Automation re-triggered by accident (e.g. manual re-run plus the schedule firing) for the same date/intern already synced above."
+      }
+    ],
+    "dailyAttendance": [
+      {
+        "recordId": "rec_int_007_2026-01-15",
+        "internId": "int_007",
+        "internName": "Ayanda Z.",
+        "date": "2026-01-15",
+        "source": {
+          "scheduledToWork": true,
+          "isPublicHolidayOrRestDay": false,
+          "leave": { "status": "none", "leaveType": null, "requestId": null },
+          "attendance": { "recorded": true, "clockIn": "08:55", "clockOut": "17:03" },
+          "correction": { "unresolved": false, "note": null },
+          "syncStatus": "ok"
+        },
+        "classification": null,
+        "countsTowardThreshold": null
+      }
+    ]
+  },
+  "expected": {
+    "dailyAttendance": [
+      {
+        "recordId": "rec_int_007_2026-01-15",
+        "classification": "Present",
+        "countsTowardThreshold": false
+      }
+    ],
+    "syncLog": {
+      "runsLogged": 2,
+      "effectiveDailyAttendanceRecords": 1,
+      "duplicatesSuppressed": 1
+    },
+    "notes": "FR-03 requires exactly one Daily Attendance record per intern per date regardless of how many times the sync fires. The second run must update-in-place (or no-op) rather than create a sibling record, and must never cause a second Alert Case or email for anything that follows from this date."
+  }
+}

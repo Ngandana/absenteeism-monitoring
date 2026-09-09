@@ -1,0 +1,38 @@
+{
+  "scenario": "Rest day or public holiday",
+  "scenarioRef": "docs/02-requirements-engineering-specification.md, section 8, row 2",
+  "description": "Excluded; does not count.",
+  "context": {
+    "finalisationWindowPassed": true
+  },
+  "input": {
+    "dailyAttendance": [
+      {
+        "recordId": "rec_int_002_2026-01-01",
+        "internId": "int_002",
+        "internName": "Sipho N.",
+        "date": "2026-01-01",
+        "source": {
+          "scheduledToWork": true,
+          "isPublicHolidayOrRestDay": true,
+          "leave": { "status": "none", "leaveType": null, "requestId": null },
+          "attendance": { "recorded": false, "clockIn": null, "clockOut": null },
+          "correction": { "unresolved": false, "note": null },
+          "syncStatus": "ok"
+        },
+        "classification": null,
+        "countsTowardThreshold": null
+      }
+    ]
+  },
+  "expected": {
+    "dailyAttendance": [
+      {
+        "recordId": "rec_int_002_2026-01-01",
+        "classification": "Excluded",
+        "countsTowardThreshold": false
+      }
+    ],
+    "notes": "New Year's Day public holiday. Excluded at step 2 of the classification order, ahead of the leave check."
+  }
+}

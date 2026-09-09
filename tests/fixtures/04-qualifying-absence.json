@@ -1,0 +1,38 @@
+{
+  "scenario": "Valid workday, no attendance, no exclusion",
+  "scenarioRef": "docs/02-requirements-engineering-specification.md, section 8, row 4",
+  "description": "Classified as Qualifying Absence after the finalisation window.",
+  "context": {
+    "finalisationWindowPassed": true
+  },
+  "input": {
+    "dailyAttendance": [
+      {
+        "recordId": "rec_int_004_2026-01-13",
+        "internId": "int_004",
+        "internName": "Kagiso T.",
+        "date": "2026-01-13",
+        "source": {
+          "scheduledToWork": true,
+          "isPublicHolidayOrRestDay": false,
+          "leave": { "status": "none", "leaveType": null, "requestId": null },
+          "attendance": { "recorded": false, "clockIn": null, "clockOut": null },
+          "correction": { "unresolved": false, "note": null },
+          "syncStatus": "ok"
+        },
+        "classification": null,
+        "countsTowardThreshold": null
+      }
+    ]
+  },
+  "expected": {
+    "dailyAttendance": [
+      {
+        "recordId": "rec_int_004_2026-01-13",
+        "classification": "Qualifying Absence",
+        "countsTowardThreshold": true
+      }
+    ],
+    "notes": "None of the exclusions apply and the finalisation window has passed, so this falls through to the last step of the classification order and counts against the active rule."
+  }
+}

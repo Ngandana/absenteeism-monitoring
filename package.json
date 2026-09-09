@@ -1,0 +1,12 @@
+{
+  "name": "intern-absenteeism-monitoring",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Intern Absenteeism Monitoring System — Pillar 5 Group",
+  "scripts": {
+    "test": "node --test tests/"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

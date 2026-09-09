@@ -1,0 +1,38 @@
+{
+  "scenario": "Pending leave request",
+  "scenarioRef": "docs/02-requirements-engineering-specification.md, section 8, row 3",
+  "description": "Classified as Pending Review; does not count until resolved.",
+  "context": {
+    "finalisationWindowPassed": true
+  },
+  "input": {
+    "dailyAttendance": [
+      {
+        "recordId": "rec_int_003_2026-01-12",
+        "internId": "int_003",
+        "internName": "Lerato P.",
+        "date": "2026-01-12",
+        "source": {
+          "scheduledToWork": true,
+          "isPublicHolidayOrRestDay": false,
+          "leave": { "status": "pending", "leaveType": "sick", "requestId": "leave_req_0044" },
+          "attendance": { "recorded": false, "clockIn": null, "clockOut": null },
+          "correction": { "unresolved": false, "note": null },
+          "syncStatus": "ok"
+        },
+        "classification": null,
+        "countsTowardThreshold": null
+      }
+    ]
+  },
+  "expected": {
+    "dailyAttendance": [
+      {
+        "recordId": "rec_int_003_2026-01-12",
+        "classification": "Pending Review",
+        "countsTowardThreshold": false
+      }
+    ],
+    "notes": "A pending (not yet approved/denied) leave request holds the day outside the absence count (FR-05) until the request is resolved one way or the other."
+  }
+}

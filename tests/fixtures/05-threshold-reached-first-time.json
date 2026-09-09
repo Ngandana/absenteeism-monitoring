@@ -1,0 +1,80 @@
+{
+  "scenario": "Threshold reached for the first time",
+  "scenarioRef": "docs/02-requirements-engineering-specification.md, section 8, row 5",
+  "description": "Exactly one Alert Case and one management email created.",
+  "context": {
+    "finalisationWindowPassed": true,
+    "activeRule": {
+      "ruleId": "rule_placeholder_4_in_30",
+      "note": "PLACEHOLDER ONLY — real threshold model is an open question, see docs/03-open-decisions-log.md",
+      "thresholdDays": 4,
+      "periodDays": 30,
+      "alertLevel": "standard"
+    }
+  },
+  "input": {
+    "dailyAttendance": [
+      {
+        "recordId": "rec_int_005_2026-01-03",
+        "internId": "int_005",
+        "internName": "Nomvula K.",
+        "date": "2026-01-03",
+        "source": { "scheduledToWork": true, "isPublicHolidayOrRestDay": false, "leave": { "status": "none", "leaveType": null, "requestId": null }, "attendance": { "recorded": false, "clockIn": null, "clockOut": null }, "correction": { "unresolved": false, "note": null }, "syncStatus": "ok" },
+        "classification": "Qualifying Absence",
+        "countsTowardThreshold": true
+      },
+      {
+        "recordId": "rec_int_005_2026-01-10",
+        "internId": "int_005",
+        "internName": "Nomvula K.",
+        "date": "2026-01-10",
+        "source": { "scheduledToWork": true, "isPublicHolidayOrRestDay": false, "leave": { "status": "none", "leaveType": null, "requestId": null }, "attendance": { "recorded": false, "clockIn": null, "clockOut": null }, "correction": { "unresolved": false, "note": null }, "syncStatus": "ok" },
+        "classification": "Qualifying Absence",
+        "countsTowardThreshold": true
+      },
+      {
+        "recordId": "rec_int_005_2026-01-17",
+        "internId": "int_005",
+        "internName": "Nomvula K.",
+        "date": "2026-01-17",
+        "source": { "scheduledToWork": true, "isPublicHolidayOrRestDay": false, "leave": { "status": "none", "leaveType": null, "requestId": null }, "attendance": { "recorded": false, "clockIn": null, "clockOut": null }, "correction": { "unresolved": false, "note": null }, "syncStatus": "ok" },
+        "classification": "Qualifying Absence",
+        "countsTowardThreshold": true
+      },
+      {
+        "recordId": "rec_int_005_2026-01-24",
+        "internId": "int_005",
+        "internName": "Nomvula K.",
+        "date": "2026-01-24",
+        "source": { "scheduledToWork": true, "isPublicHolidayOrRestDay": false, "leave": { "status": "none", "leaveType": null, "requestId": null }, "attendance": { "recorded": false, "clockIn": null, "clockOut": null }, "correction": { "unresolved": false, "note": null }, "syncStatus": "ok" },
+        "classification": "Qualifying Absence",
+        "countsTowardThreshold": true
+      }
+    ],
+    "monitoringCycle": {
+      "cycleId": "cycle_int_005_2026-01-01",
+      "internId": "int_005",
+      "windowStart": "2026-01-01",
+      "windowEnd": "2026-01-30",
+      "runningCount": 3,
+      "thresholdReached": false
+    },
+    "alertCase": null
+  },
+  "expected": {
+    "monitoringCycle": {
+      "cycleId": "cycle_int_005_2026-01-01",
+      "runningCount": 4,
+      "thresholdReached": true
+    },
+    "alertCase": {
+      "internId": "int_005",
+      "ruleId": "rule_placeholder_4_in_30",
+      "count": 4,
+      "qualifyingDates": ["2026-01-03", "2026-01-10", "2026-01-17", "2026-01-24"],
+      "status": "Open",
+      "emailsSent": 1
+    },
+    "notes": "The 4th qualifying absence in the window pushes runningCount to the threshold for the first time. Exactly one new Alert Case is created and exactly one email is sent — never more."
+  }
+}

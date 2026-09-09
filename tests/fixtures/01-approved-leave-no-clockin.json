@@ -1,0 +1,38 @@
+{
+  "scenario": "Approved leave, no clock-in",
+  "scenarioRef": "docs/02-requirements-engineering-specification.md, section 8, row 1",
+  "description": "Classified as Approved Leave; does not count.",
+  "context": {
+    "finalisationWindowPassed": true
+  },
+  "input": {
+    "dailyAttendance": [
+      {
+        "recordId": "rec_int_001_2026-01-05",
+        "internId": "int_001",
+        "internName": "Thandeka M.",
+        "date": "2026-01-05",
+        "source": {
+          "scheduledToWork": true,
+          "isPublicHolidayOrRestDay": false,
+          "leave": { "status": "approved", "leaveType": "annual", "requestId": "leave_req_0031" },
+          "attendance": { "recorded": false, "clockIn": null, "clockOut": null },
+          "correction": { "unresolved": false, "note": null },
+          "syncStatus": "ok"
+        },
+        "classification": null,
+        "countsTowardThreshold": null
+      }
+    ]
+  },
+  "expected": {
+    "dailyAttendance": [
+      {
+        "recordId": "rec_int_001_2026-01-05",
+        "classification": "Approved Leave",
+        "countsTowardThreshold": false
+      }
+    ],
+    "notes": "Approved leave short-circuits the classification order at step 3, before attendance is even considered. No clock-in is expected or required."
+  }
+}

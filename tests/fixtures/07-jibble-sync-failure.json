@@ -1,0 +1,53 @@
+{
+  "scenario": "Jibble sync fails or is incomplete",
+  "scenarioRef": "docs/02-requirements-engineering-specification.md, section 8, row 7",
+  "description": "Records marked Data Error / Sync Pending; excluded from counts until resolved.",
+  "context": {
+    "finalisationWindowPassed": true
+  },
+  "input": {
+    "syncRuns": [
+      {
+        "runId": "sync_2026-01-14_0700",
+        "date": "2026-01-14",
+        "startedAt": "2026-01-14T07:00:00+02:00",
+        "result": "error",
+        "errorMessage": "Jibble API returned HTTP 503 while fetching attendance events for int_006",
+        "internsAffected": ["int_006"]
+      }
+    ],
+    "dailyAttendance": [
+      {
+        "recordId": "rec_int_006_2026-01-14",
+        "internId": "int_006",
+        "internName": "Bongani S.",
+        "date": "2026-01-14",
+        "source": {
+          "scheduledToWork": true,
+          "isPublicHolidayOrRestDay": false,
+          "leave": { "status": "none", "leaveType": null, "requestId": null },
+          "attendance": { "recorded": false, "clockIn": null, "clockOut": null },
+          "correction": { "unresolved": false, "note": null },
+          "syncStatus": "error"
+        },
+        "classification": null,
+        "countsTowardThreshold": null
+      }
+    ]
+  },
+  "expected": {
+    "dailyAttendance": [
+      {
+        "recordId": "rec_int_006_2026-01-14",
+        "classification": "Data Error / Sync Pending",
+        "countsTowardThreshold": false
+      }
+    ],
+    "syncLog": {
+      "runId": "sync_2026-01-14_0700",
+      "status": "failed",
+      "retryRequired": true
+    },
+    "notes": "Fail-safe rule from the Risks table: a sync error must never be assumed to be an absence. The record is held as Data Error / Sync Pending and excluded from any count until the retry process (FR-15) resolves it."
+  }
+}
