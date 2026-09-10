@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/modernist-cef21b23-1130-41e1-ac02-88d8194bdb44/styles.css">
+<script src="_ds/modernist-cef21b23-1130-41e1-ac02-88d8194bdb44/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  a { color: var(--color-accent-700); text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { color: var(--color-accent-800); }
+  button, select, textarea, input { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  @keyframes dcspin { to { transform: rotate(360deg); } }
+  @keyframes dcfade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:var(--color-bg);display:flex;flex-direction:column">
+
+  <header style="border-bottom:2px solid var(--color-divider);background:var(--color-bg);position:sticky;top:0;z-index:20">
+    <div style="max-width:1440px;margin:0 auto;width:100%;padding:14px clamp(16px,4vw,32px);display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:14px;min-width:0">
+        <span aria-hidden="true" style="display:inline-flex;width:32px;height:32px;background:var(--color-accent);flex:none"></span>
+        <div style="min-width:0">
+          <div style="font-family:var(--font-heading);font-weight:800;font-size:17px;letter-spacing:-0.01em;line-height:1.2">Intern Absenteeism Monitoring</div>
+          <div style="font-size:13px;color:var(--color-neutral-700);line-height:1.4">Pillar 5 Group · Airtable ← Jibble</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-size:13px;color:var(--color-neutral-700);display:none">·</span>
+        <div style="display:flex;align-items:center;gap:10px;padding:6px 12px;border:2px solid var(--color-divider);min-height:44px">
+          <span aria-hidden="true" style="display:inline-flex;width:26px;height:26px;background:var(--color-neutral-800);color:var(--color-neutral-100);align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none">GA</span>
+          <span style="font-size:13px;line-height:1.3">Miss Gabby<br><span style="color:var(--color-neutral-700)">Management</span></span>
+        </div>
+      </div>
+    </div>
+    <nav aria-label="Primary" style="max-width:1440px;margin:0 auto;width:100%;padding:0 clamp(16px,4vw,32px);display:flex;gap:0;overflow-x:auto;border-top:1px solid var(--color-neutral-300)">
+      <sc-for list="{{ navItems }}" as="tab" hint-placeholder-count="4">
+        <button type="button" onClick="{{ tab.go }}" aria-label="{{ tab.aria }}" aria-current="{{ tab.current }}" style="cursor:pointer;background:none;border:0;border-bottom:3px solid transparent;padding:0 18px;min-height:48px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;white-space:nowrap;transition:background-color 180ms ease,color 180ms ease" style-hover="background:var(--color-neutral-200)">
+          <span style="width:8px;height:8px;background:{{ tab.dot }};flex:none" aria-hidden="true"></span>
+          {{ tab.label }}
+          <sc-if value="{{ tab.badge }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:12px;font-weight:700;padding:1px 7px;background:var(--color-neutral-900);color:var(--color-neutral-100)">{{ tab.badge }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </nav>
+    <div style="border-top:1px solid var(--color-neutral-300);background:var(--color-neutral-100)">
+      <div style="max-width:1440px;margin:0 auto;padding:8px clamp(16px,4vw,32px);display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;font-size:13px;color:var(--color-neutral-700)">
+        <span style="display:inline-flex;align-items:center;gap:7px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+          Last sync {{ lastSync }}
+        </span>
+        <span aria-hidden="true" style="color:var(--color-neutral-400)">|</span>
+        <span>{{ syncedRecords }} records synced</span>
+        <sc-if value="{{ hasSyncIssues }}" hint-placeholder-val="{{ true }}">
+          <span style="display:inline-flex;align-items:center;gap:8px;margin-left:auto;color:var(--color-accent-700);font-weight:600">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+            {{ syncIssueText }}
+            <button type="button" onClick="{{ goExceptions }}" aria-label="Review sync exceptions in Data Quality" style="cursor:pointer;background:none;border:2px solid var(--color-accent-700);color:var(--color-accent-700);padding:0 14px;min-height:44px;font-size:13px;font-weight:600;transition:background-color 180ms ease,color 180ms ease" style-hover="background:var(--color-accent-700);color:var(--color-neutral-100)">Review</button>
+          </span>
+        </sc-if>
+      </div>
+    </div>
+  </header>
+
+  <main ref="{{ rootRef }}" style="flex:1;width:100%;max-width:1440px;margin:0 auto;padding:clamp(20px,4vw,36px) clamp(16px,4vw,32px) 64px">
+
+    <sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
+      <section aria-labelledby="ov-h" style="animation:dcfade 220ms ease both">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between;margin-bottom:6px">
+          <h1 id="ov-h" style="font-family:var(--font-heading);font-weight:800;font-size:clamp(26px,4vw,38px);letter-spacing:-0.02em;margin:0">Overview</h1>
+          <p style="margin:0;font-size:14px;color:var(--color-neutral-700)">Cycle {{ currentCycle }} · {{ openTotal }} open cases</p>
+        </div>
+        <div class="hr" style="margin:16px 0 24px"></div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;margin:0 0 12px">
+          <h2 style="font-family:var(--font-heading);font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--color-neutral-700);margin:0">Open cases by alert level</h2>
+          <p style="margin:0;font-size:13px;color:var(--color-neutral-700)">Thresholds 2 / 5 / 7 / 10 days per rolling cycle — pending sign-off.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:{{ levelCols }};gap:0;background:var(--color-bg);border:2px solid var(--color-divider);border-right:0;border-bottom:0;margin-bottom:32px">
+          <sc-for list="{{ levelStats }}" as="lv" hint-placeholder-count="4">
+            <button type="button" onClick="{{ lv.go }}" aria-label="{{ lv.aria }}" style="cursor:pointer;text-align:left;border:0;border-right:2px solid var(--color-divider);border-bottom:2px solid var(--color-divider);background:var(--color-bg);padding:18px;min-height:150px;display:flex;flex-direction:column;gap:10px;transition:background-color 200ms ease,transform 200ms ease" style-hover="background:var(--color-neutral-200);transform:translateY(-2px)">
+              <span style="display:flex;align-items:center;gap:5px" aria-hidden="true">
+                <sc-for list="{{ lv.marks }}" as="m" hint-placeholder-count="4">
+                  <sc-if value="{{ m.on }}" hint-placeholder-val="{{ true }}"><span style="width:10px;height:18px;background:var(--color-neutral-900)"></span></sc-if>
+                  <sc-if value="{{ m.off }}" hint-placeholder-val="{{ false }}"><span style="width:10px;height:18px;border:1.5px solid var(--color-neutral-400)"></span></sc-if>
+                </sc-for>
+              </span>
+              <span style="font-family:var(--font-heading);font-weight:800;font-size:44px;line-height:1;letter-spacing:-0.03em">{{ lv.count }}</span>
+              <span style="font-size:15px;font-weight:700">{{ lv.label }}</span>
+              <span style="font-size:13px;color:var(--color-neutral-700);margin-top:auto">{{ lv.note }}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:0;background:var(--color-bg);border:2px solid var(--color-divider);border-right:0;border-bottom:0">
+
+          <div style="background:var(--color-bg);border-right:2px solid var(--color-divider);border-bottom:2px solid var(--color-divider);padding:20px">
+            <h2 style="font-family:var(--font-heading);font-size:16px;font-weight:800;margin:0 0 4px">Open cases by department</h2>
+            <p style="margin:0 0 8px;font-size:13px;color:var(--color-neutral-700)">Hover a bar for the exact split.</p>
+            <ul style="list-style:none;margin:0 0 16px;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12px;color:var(--color-neutral-800)">
+              <li style="display:flex;align-items:center;gap:7px"><span aria-hidden="true" style="width:16px;height:11px;background:var(--color-neutral-800)"></span>Early Warning – Consultation</li>
+              <li style="display:flex;align-items:center;gap:7px"><span aria-hidden="true" style="width:16px;height:11px;background:var(--color-accent);border:1px solid var(--color-accent-800)"></span>Red Flag</li>
+            </ul>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <sc-for list="{{ deptBars }}" as="d" hint-placeholder-count="6">
+                <div>
+                  <div style="display:flex;justify-content:space-between;gap:12px;font-size:13px;margin-bottom:5px">
+                    <span style="font-weight:600">{{ d.name }}</span>
+                    <span style="color:var(--color-neutral-700);font-variant-numeric:tabular-nums">{{ d.total }}</span>
+                  </div>
+                  <div title="{{ d.tip }}" role="img" aria-label="{{ d.tip }}" style="display:flex;height:18px;background:var(--color-neutral-200);cursor:default">
+                    <span aria-hidden="true" style="background:var(--color-neutral-800);width:{{ d.wBase }};transition:width 250ms ease"></span>
+                    <span aria-hidden="true" style="background:var(--color-accent);width:{{ d.wRed }};transition:width 250ms ease"></span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background:var(--color-bg);border-right:2px solid var(--color-divider);border-bottom:2px solid var(--color-divider);padding:20px">
+            <h2 style="font-family:var(--font-heading);font-size:16px;font-weight:800;margin:0 0 4px">Qualifying absences per 30-day cycle</h2>
+            <p style="margin:0 0 8px;font-size:13px;color:var(--color-neutral-700)">Six most recent cycles. Hover a column for values.</p>
+            <ul style="list-style:none;margin:0 0 16px;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12px;color:var(--color-neutral-800)">
+              <li style="display:flex;align-items:center;gap:7px"><span aria-hidden="true" style="width:16px;height:11px;background:var(--color-neutral-800)"></span>Qualifying absences</li>
+              <li style="display:flex;align-items:center;gap:7px"><span aria-hidden="true" style="width:16px;height:0;border-top:2px dashed var(--color-neutral-700)"></span>{{ cycleAvgLabel }}</li>
+            </ul>
+            <div style="position:relative;border-bottom:2px solid var(--color-divider);border-left:1px solid var(--color-neutral-300);padding:0 4px">
+              <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:{{ avgLine }};border-top:2px dashed var(--color-neutral-700);opacity:0.8"></div>
+              <div style="display:flex;align-items:flex-end;gap:clamp(6px,2vw,18px);height:180px">
+                <sc-for list="{{ cycleBars }}" as="c" hint-placeholder-count="6">
+                  <div title="{{ c.tip }}" role="img" aria-label="{{ c.tip }}" style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;height:100%;cursor:default">
+                    <span style="font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">{{ c.value }}</span>
+                    <span aria-hidden="true" style="width:100%;background:var(--color-neutral-800);height:{{ c.h }};transition:height 250ms ease" style-hover="background:var(--color-neutral-900)"></span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;gap:clamp(6px,2vw,18px);padding:8px 4px 0">
+              <sc-for list="{{ cycleBars }}" as="c" hint-placeholder-count="6">
+                <span style="flex:1;text-align:center;font-size:11px;color:var(--color-neutral-700);line-height:1.3">{{ c.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:32px;border:2px solid var(--color-divider);background:var(--color-bg)">
+          <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between;padding:16px 20px;border-bottom:2px solid var(--color-divider)">
+            <h2 style="font-family:var(--font-heading);font-size:16px;font-weight:800;margin:0">Needs a decision first</h2>
+            <button type="button" onClick="{{ goCases }}" aria-label="Open the full alert case list" class="btn btn-ghost" style="cursor:pointer;min-height:44px">All cases →</button>
+          </div>
+          <sc-for list="{{ priorityCases }}" as="c" hint-placeholder-count="3">
+            <button type="button" onClick="{{ c.open }}" aria-label="{{ c.aria }}" style="cursor:pointer;width:100%;text-align:left;background:var(--color-bg);border:0;border-bottom:1px solid var(--color-neutral-300);padding:14px 20px;min-height:56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 16px;align-items:center;transition:background-color 180ms ease" style-hover="background:var(--color-neutral-200)">
+              <span style="font-weight:700;font-size:15px">{{ c.name }}<br><span style="font-weight:400;font-size:13px;color:var(--color-neutral-700)">{{ c.dept }}</span></span>
+              <span style="font-size:13px;color:var(--color-neutral-800)">{{ c.rule }}</span>
+              <span style="display:flex;align-items:center;gap:8px">
+                <span style="display:flex;align-items:center;gap:4px" aria-hidden="true">
+                  <sc-for list="{{ c.marks }}" as="m" hint-placeholder-count="4">
+                    <sc-if value="{{ m.on }}" hint-placeholder-val="{{ true }}"><span style="width:8px;height:14px;background:var(--color-neutral-900)"></span></sc-if>
+                    <sc-if value="{{ m.off }}" hint-placeholder-val="{{ false }}"><span style="width:8px;height:14px;border:1.5px solid var(--color-neutral-400)"></span></sc-if>
+                  </sc-for>
+                </span>
+                <span style="font-size:13px;font-weight:600">{{ c.level }}</span>
+              </span>
+              <span style="font-size:13px;color:var(--color-neutral-700)">{{ c.status }} · opened {{ c.opened }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isCases }}" hint-placeholder-val="{{ false }}">
+      <section aria-labelledby="cs-h" style="animation:dcfade 220ms ease both">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between">
+          <h1 id="cs-h" style="font-family:var(--font-heading);font-weight:800;font-size:clamp(26px,4vw,38px);letter-spacing:-0.02em;margin:0">Alert cases</h1>
+          <p style="margin:0;font-size:14px;color:var(--color-neutral-700)" aria-live="polite">{{ resultCount }}</p>
+        </div>
+        <div class="hr" style="margin:16px 0 20px"></div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;padding:18px;border:2px solid var(--color-divider);background:var(--color-neutral-100);margin-bottom:24px">
+          <div class="field">
+            <label for="f-status">Status</label>
+            <select id="f-status" class="input" aria-label="Filter cases by status" onChange="{{ onStatus }}" value="{{ fStatus }}" style="cursor:pointer;min-height:44px">
+              <sc-for list="{{ statusOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o }}">{{ o }}</option></sc-for>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-dept">Department</label>
+            <select id="f-dept" class="input" aria-label="Filter cases by department" onChange="{{ onDept }}" value="{{ fDept }}" style="cursor:pointer;min-height:44px">
+              <sc-for list="{{ deptOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o }}">{{ o }}</option></sc-for>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-level">Alert level</label>
+            <select id="f-level" class="input" aria-label="Filter cases by alert level" onChange="{{ onLevel }}" value="{{ fLevel }}" style="cursor:pointer;min-height:44px">
+              <sc-for list="{{ levelOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+            </select>
+          </div>
+          <div style="display:flex;align-items:flex-end">
+            <button type="button" onClick="{{ clearFilters }}" aria-label="Clear all case filters" class="btn btn-secondary" style="cursor:pointer;min-height:44px">Clear filters</button>
+          </div>
+        </div>
+
+        <p style="margin:0 0 12px;font-size:13px;color:var(--color-neutral-700);display:flex;align-items:center;gap:8px">
+          <span aria-hidden="true" style="display:flex;align-items:center;gap:3px"><span style="width:7px;height:12px;background:var(--color-neutral-900)"></span><span style="width:7px;height:12px;background:var(--color-neutral-900)"></span><span style="width:7px;height:12px;border:1.5px solid var(--color-neutral-400)"></span><span style="width:7px;height:12px;border:1.5px solid var(--color-neutral-400)"></span></span>
+          Filled marks show the escalation step, not a day count: step 1 Early Warning · step 2 Concern · step 3 Consultation · step 4 Red Flag.
+        </p>
+
+        <sc-if value="{{ isNarrow }}" hint-placeholder-val="{{ false }}">
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px">
+            <sc-for list="{{ visibleCases }}" as="c" hint-placeholder-count="6">
+              <li>
+                <button type="button" onClick="{{ c.open }}" aria-label="{{ c.aria }}" style="cursor:pointer;width:100%;text-align:left;background:var(--color-bg);border:2px solid var(--color-divider);border-left:{{ c.edgeCard }};padding:16px;min-height:44px;display:flex;flex-direction:column;gap:12px;transition:background-color 180ms ease,transform 180ms ease" style-hover="background:var(--color-neutral-200);transform:translateY(-2px)">
+                  <span style="display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;justify-content:space-between">
+                    <span style="font-family:var(--font-heading);font-weight:800;font-size:18px">{{ c.name }}</span>
+                    <span style="font-size:12px;color:var(--color-neutral-700)">{{ c.id }}</span>
+                  </span>
+                  <span style="display:flex;align-items:center;gap:8px">
+                    <span style="display:flex;align-items:center;gap:3px" aria-hidden="true">
+                      <sc-for list="{{ c.marks }}" as="m" hint-placeholder-count="4">
+                        <sc-if value="{{ m.on }}" hint-placeholder-val="{{ true }}"><span style="width:8px;height:16px;background:var(--color-neutral-900)"></span></sc-if>
+                        <sc-if value="{{ m.off }}" hint-placeholder-val="{{ false }}"><span style="width:8px;height:16px;border:1.5px solid var(--color-neutral-400)"></span></sc-if>
+                      </sc-for>
+                    </span>
+                    <sc-if value="{{ c.isRed }}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size:13px;font-weight:700;padding:3px 9px;background:var(--color-accent);color:var(--color-neutral-100)">Red Flag</span>
+                    </sc-if>
+                    <sc-if value="{{ c.notRed }}" hint-placeholder-val="{{ true }}">
+                      <span style="font-size:13px;font-weight:600">{{ c.level }}</span>
+                    </sc-if>
+                    <span style="font-size:13px;font-weight:600;padding:3px 9px;border:1.5px solid var(--color-neutral-700)">{{ c.status }}</span>
+                  </span>
+                  <span style="font-size:14px;color:var(--color-neutral-800)">{{ c.cardSummary }}</span>
+                  <span style="font-size:13px;color:var(--color-neutral-700)">{{ c.dept }} · {{ c.manager }} · opened {{ c.opened }}</span>
+                </button>
+              </li>
+            </sc-for>
+          </ul>
+        </sc-if>
+
+        <div style="border:2px solid var(--color-divider);background:var(--color-bg);overflow-x:auto;display:{{ tableDisplay }}">
+          <table class="table" style="width:100%;min-width:940px;border-collapse:collapse">
+            <caption style="text-align:left;padding:14px 18px;font-size:13px;color:var(--color-neutral-700);border-bottom:2px solid var(--color-divider)">All open and closed alert cases, most recently opened first.</caption>
+            <thead>
+              <tr>
+                <th scope="col" style="text-align:left;padding:12px 18px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Intern</th>
+                <th scope="col" style="text-align:left;padding:12px 18px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Department</th>
+                <th scope="col" style="text-align:left;padding:12px 18px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Manager</th>
+                <th scope="col" style="text-align:left;padding:12px 18px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Rule triggered</th>
+                <th scope="col" style="text-align:left;padding:12px 18px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Alert level</th>
+                <th scope="col" style="text-align:right;padding:12px 18px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Absences</th>
+                <th scope="col" style="text-align:left;padding:12px 18px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Status</th>
+                <th scope="col" style="text-align:left;padding:12px 18px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Opened</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ visibleCases }}" as="c" hint-placeholder-count="8">
+                <tr onClick="{{ c.open }}" style="cursor:pointer;transition:background-color 180ms ease" style-hover="background:var(--color-neutral-200)">
+                  <td style="padding:14px 18px;border-left:{{ c.edge }}">
+                    <button type="button" onClick="{{ c.open }}" aria-label="{{ c.aria }}" style="cursor:pointer;background:none;border:0;padding:0;text-align:left;font-weight:700;font-size:15px;text-decoration:underline;text-underline-offset:3px">{{ c.name }}</button>
+                    <div style="font-size:12px;color:var(--color-neutral-700)">{{ c.id }}</div>
+                  </td>
+                  <td style="padding:14px 18px;font-size:14px">{{ c.dept }}</td>
+                  <td style="padding:14px 18px;font-size:14px">{{ c.manager }}</td>
+                  <td style="padding:14px 18px;font-size:14px">{{ c.rule }}</td>
+                  <td style="padding:14px 18px">
+                    <span style="display:flex;align-items:center;gap:8px">
+                      <span style="display:flex;align-items:center;gap:3px" aria-hidden="true">
+                        <sc-for list="{{ c.marks }}" as="m" hint-placeholder-count="4">
+                          <sc-if value="{{ m.on }}" hint-placeholder-val="{{ true }}"><span style="width:7px;height:14px;background:var(--color-neutral-900)"></span></sc-if>
+                          <sc-if value="{{ m.off }}" hint-placeholder-val="{{ false }}"><span style="width:7px;height:14px;border:1.5px solid var(--color-neutral-400)"></span></sc-if>
+                        </sc-for>
+                      </span>
+                      <sc-if value="{{ c.isRed }}" hint-placeholder-val="{{ false }}">
+                        <span style="font-size:13px;font-weight:700;padding:3px 9px;background:var(--color-accent);color:var(--color-neutral-100);white-space:nowrap">Red Flag</span>
+                      </sc-if>
+                      <sc-if value="{{ c.notRed }}" hint-placeholder-val="{{ true }}">
+                        <span style="font-size:13px;font-weight:600;white-space:nowrap">{{ c.level }}</span>
+                      </sc-if>
+                    </span>
+                  </td>
+                  <td style="padding:14px 18px;text-align:right;font-variant-numeric:tabular-nums;font-weight:700">{{ c.count }}</td>
+                  <td style="padding:14px 18px"><span style="font-size:13px;font-weight:600;padding:3px 9px;border:1.5px solid var(--color-neutral-700);white-space:nowrap">{{ c.status }}</span></td>
+                  <td style="padding:14px 18px;font-size:14px;color:var(--color-neutral-800);white-space:nowrap">{{ c.opened }}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+        <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:20px 0 0;padding:24px;border:2px dashed var(--color-neutral-400);font-size:15px;color:var(--color-neutral-700)">No cases match these filters. Clear one to widen the review.</p>
+        </sc-if>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+      <section aria-labelledby="cd-h" style="animation:dcfade 220ms ease both">
+        <button type="button" onClick="{{ goCases }}" aria-label="Back to alert case list" style="cursor:pointer;background:none;border:0;padding:0 0 12px;display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:14px;font-weight:600;color:var(--color-neutral-800);transition:color 180ms ease" style-hover="color:var(--color-accent-700)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+          All cases
+        </button>
+
+        <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;justify-content:space-between">
+          <div>
+            <p style="margin:0;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-neutral-700)">Case {{ dCase.id }} · opened {{ dCase.opened }}</p>
+            <h1 id="cd-h" style="font-family:var(--font-heading);font-weight:800;font-size:clamp(26px,4vw,38px);letter-spacing:-0.02em;margin:4px 0 0">{{ dCase.name }}</h1>
+          </div>
+          <span style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:2px solid var(--color-divider)">
+            <span style="display:flex;align-items:center;gap:4px" aria-hidden="true">
+              <sc-for list="{{ dCase.marks }}" as="m" hint-placeholder-count="4">
+                <sc-if value="{{ m.on }}" hint-placeholder-val="{{ true }}"><span style="width:9px;height:18px;background:var(--color-neutral-900)"></span></sc-if>
+                <sc-if value="{{ m.off }}" hint-placeholder-val="{{ false }}"><span style="width:9px;height:18px;border:1.5px solid var(--color-neutral-400)"></span></sc-if>
+              </sc-for>
+            </span>
+            <span style="font-size:15px;font-weight:700">{{ dCase.level }}</span>
+            <span style="font-size:13px;color:var(--color-neutral-700)">step {{ dCase.step }} of 4</span>
+          </span>
+        </div>
+        <div class="hr" style="margin:16px 0 0"></div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:0;background:var(--color-bg);border:2px solid var(--color-divider);border-top:0;border-right:0;border-bottom:0">
+          <dl style="margin:0;background:var(--color-bg);border-right:2px solid var(--color-divider);border-bottom:2px solid var(--color-divider);padding:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:16px">
+            <div><dt style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-neutral-700)">Department</dt><dd style="margin:4px 0 0;font-size:15px;font-weight:600">{{ dCase.dept }}</dd></div>
+            <div><dt style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-neutral-700)">Reporting manager</dt><dd style="margin:4px 0 0;font-size:15px;font-weight:600">{{ dCase.manager }}</dd></div>
+            <div><dt style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-neutral-700)">Qualifying absences</dt><dd style="margin:4px 0 0;font-size:15px;font-weight:600">{{ dCase.count }}</dd></div>
+          </dl>
+          <dl style="margin:0;background:var(--color-bg);border-right:2px solid var(--color-divider);border-bottom:2px solid var(--color-divider);padding:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px">
+            <div><dt style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-neutral-700)">Rule triggered</dt><dd style="margin:4px 0 0;font-size:15px;font-weight:600">{{ dCase.rule }}</dd></div>
+            <div><dt style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-neutral-700)">30-day cycle</dt><dd style="margin:4px 0 0;font-size:15px;font-weight:600">{{ dCase.cycle }}</dd></div>
+          </dl>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:28px;margin-top:28px;align-items:start">
+
+          <div>
+            <h2 style="font-family:var(--font-heading);font-size:16px;font-weight:800;margin:0 0 4px">Evidence — qualifying absence dates</h2>
+            <p style="margin:0 0 14px;font-size:13px;color:var(--color-neutral-700)">Synced from Jibble. Approved leave, public holidays and Pending Review days are held out of the count.</p>
+            <div style="border:2px solid var(--color-divider);overflow-x:auto">
+              <table class="table" style="width:100%;border-collapse:collapse">
+                <thead>
+                  <tr>
+                    <th scope="col" style="text-align:left;padding:11px 16px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Date</th>
+                    <th scope="col" style="text-align:left;padding:11px 16px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Classification</th>
+                    <th scope="col" style="text-align:left;padding:11px 16px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Source record</th>
+                    <th scope="col" style="text-align:left;padding:11px 16px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Counts</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <sc-for list="{{ dCase.dates }}" as="d" hint-placeholder-count="4">
+                    <tr>
+                      <td style="padding:12px 16px;font-size:14px;font-weight:600;white-space:nowrap">{{ d.date }}</td>
+                      <td style="padding:12px 16px;font-size:14px">{{ d.type }}</td>
+                      <td style="padding:12px 16px;font-size:13px;color:var(--color-neutral-700)">{{ d.source }}</td>
+                      <td style="padding:12px 16px;font-size:13px">
+                        <sc-if value="{{ d.counts }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;gap:6px;font-weight:600"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Yes</span></sc-if>
+                        <sc-if value="{{ d.excluded }}" hint-placeholder-val="{{ false }}"><span style="color:var(--color-neutral-700)">Excluded</span></sc-if>
+                      </td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+
+            <h2 style="font-family:var(--font-heading);font-size:16px;font-weight:800;margin:28px 0 12px">Case history</h2>
+            <ol style="list-style:none;margin:0;padding:0;border-left:2px solid var(--color-divider)">
+              <sc-for list="{{ dCase.history }}" as="h" hint-placeholder-count="3">
+                <li style="padding:0 0 18px 18px;position:relative">
+                  <span aria-hidden="true" style="position:absolute;left:-6px;top:6px;width:10px;height:10px;background:var(--color-neutral-800)"></span>
+                  <p style="margin:0;font-size:14px;font-weight:600">{{ h.what }}</p>
+                  <p style="margin:2px 0 0;font-size:13px;color:var(--color-neutral-700)">{{ h.who }} · {{ h.when }}</p>
+                </li>
+              </sc-for>
+            </ol>
+          </div>
+
+          <form onSubmit="{{ onSubmit }}" aria-label="Case review decision" style="border:2px solid var(--color-divider);background:var(--color-bg)">
+            <div style="padding:16px 18px;background:var(--color-neutral-200);border-bottom:2px solid var(--color-divider);display:flex;gap:12px;align-items:flex-start">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5"/><path d="M12 8h.01"/></svg>
+              <p style="margin:0;font-size:14px"><strong>Review and decide only.</strong> Nothing on this screen contacts the intern. Any conversation, consultation or formal step is arranged by a person after this record is saved.</p>
+            </div>
+
+            <div style="padding:18px;display:flex;flex-direction:column;gap:22px">
+              <fieldset style="border:0;margin:0;padding:0">
+                <legend style="font-size:14px;font-weight:700;padding:0 0 8px">Case status</legend>
+                <div class="seg" role="radiogroup" aria-label="Case status" style="display:flex;flex-wrap:wrap">
+                  <sc-for list="{{ statusChoices }}" as="s" hint-placeholder-count="5">
+                    <button type="button" class="seg-opt" onClick="{{ s.pick }}" aria-label="{{ s.aria }}" aria-pressed="{{ s.pressed }}" style="cursor:pointer;flex:1 1 118px;min-height:44px;font-size:13px;font-weight:600;text-align:left;transition:background-color 180ms ease,color 180ms ease;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button>
+                  </sc-for>
+                </div>
+              </fieldset>
+
+              <div class="field">
+                <label for="d-action" style="font-size:14px;font-weight:700">Action decision</label>
+                <p style="margin:2px 0 6px;font-size:13px;color:var(--color-neutral-700)">What you have decided to do next, off-system.</p>
+                <select id="d-action" class="input" aria-label="Action decision for this case" onChange="{{ onAction }}" value="{{ dAction }}" style="cursor:pointer;min-height:44px">
+                  <sc-for list="{{ actionOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o }}">{{ o }}</option></sc-for>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="d-notes" style="font-size:14px;font-weight:700">Decision notes</label>
+                <p style="margin:2px 0 6px;font-size:13px;color:var(--color-neutral-700)">Required. Record the evidence you relied on and any context (min. 15 characters).</p>
+                <textarea id="d-notes" class="input" rows="5" aria-label="Decision notes" aria-describedby="d-notes-err" aria-invalid="{{ notesInvalid }}" onChange="{{ onNotes }}" onBlur="{{ onNotesBlur }}" value="{{ dNotes }}" placeholder="e.g. Three unexcused absences confirmed against Jibble records; pattern is Monday-only. Scheduling a discussion with the department lead." style="width:100%;resize:vertical;min-height:120px;border-color:{{ notesBorder }}"></textarea>
+                <p id="d-notes-err" aria-live="polite" style="margin:6px 0 0;font-size:13px;font-weight:600;color:var(--color-accent-700);min-height:20px">{{ notesError }}</p>
+              </div>
+
+              <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;border-top:2px solid var(--color-divider);padding-top:16px">
+                <button type="submit" class="btn btn-primary" aria-label="Save case decision" aria-busy="{{ saving }}" disabled="{{ saving }}" style="cursor:pointer;min-height:44px;display:inline-flex;align-items:center;gap:10px;transition:background-color 180ms ease,opacity 180ms ease">
+                  <sc-if value="{{ saving }}" hint-placeholder-val="{{ false }}">
+                    <span aria-hidden="true" style="width:15px;height:15px;border:2px solid currentColor;border-top-color:transparent;animation:dcspin 700ms linear infinite;display:inline-block"></span>
+                  </sc-if>
+                  {{ saveLabel }}
+                </button>
+                <button type="button" class="btn btn-secondary" onClick="{{ resetDraft }}" aria-label="Discard unsaved changes to this case" style="cursor:pointer;min-height:44px">Discard changes</button>
+                <p aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:var(--color-neutral-800)">{{ savedMsg }}</p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isQuality }}" hint-placeholder-val="{{ false }}">
+      <section aria-labelledby="dq-h" style="animation:dcfade 220ms ease both">
+        <h1 id="dq-h" style="font-family:var(--font-heading);font-weight:800;font-size:clamp(26px,4vw,38px);letter-spacing:-0.02em;margin:0">Data quality &amp; exceptions</h1>
+        <p style="margin:8px 0 0;font-size:15px;color:var(--color-neutral-800);max-width:64ch">Records that could not be classified into a case, and the sync log behind them. Clearing these keeps the case list trustworthy — no alert is raised from an unresolved record.</p>
+        <div class="hr" style="margin:18px 0 26px"></div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0;background:var(--color-bg);border:2px solid var(--color-divider);border-right:0;border-bottom:0;margin-bottom:30px">
+          <sc-for list="{{ qualityStats }}" as="q" hint-placeholder-count="3">
+            <div style="background:var(--color-bg);border-right:2px solid var(--color-divider);border-bottom:2px solid var(--color-divider);padding:16px 18px">
+              <p style="margin:0;font-family:var(--font-heading);font-weight:800;font-size:32px;line-height:1.1">{{ q.value }}</p>
+              <p style="margin:4px 0 0;font-size:14px;font-weight:600">{{ q.label }}</p>
+              <p style="margin:2px 0 0;font-size:13px;color:var(--color-neutral-700)">{{ q.note }}</p>
+            </div>
+          </sc-for>
+        </div>
+
+        <h2 style="font-family:var(--font-heading);font-size:18px;font-weight:800;margin:0 0 12px">Records awaiting review</h2>
+        <div style="border:2px solid var(--color-divider);overflow-x:auto;margin-bottom:34px">
+          <table class="table" style="width:100%;min-width:800px;border-collapse:collapse">
+            <thead>
+              <tr>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Record</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Intern</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Date</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Issue</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">State</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ exceptions }}" as="e" hint-placeholder-count="5">
+                <tr>
+                  <td style="padding:13px 16px;font-size:13px;font-family:var(--font-body);color:var(--color-neutral-800)">{{ e.id }}</td>
+                  <td style="padding:13px 16px;font-size:14px;font-weight:600">{{ e.name }}</td>
+                  <td style="padding:13px 16px;font-size:14px;white-space:nowrap">{{ e.date }}</td>
+                  <td style="padding:13px 16px;font-size:14px">{{ e.issue }}</td>
+                  <td style="padding:13px 16px">
+                    <sc-if value="{{ e.isError }}" hint-placeholder-val="{{ false }}">
+                      <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;padding:3px 9px;background:var(--color-accent-200);color:var(--color-accent-800);border:1.5px solid var(--color-accent-700);white-space:nowrap">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+                        Data Error
+                      </span>
+                    </sc-if>
+                    <sc-if value="{{ e.isPending }}" hint-placeholder-val="{{ true }}">
+                      <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:3px 9px;border:1.5px solid var(--color-neutral-700);white-space:nowrap">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                        Pending Review
+                      </span>
+                    </sc-if>
+                    <sc-if value="{{ e.isResolved }}" hint-placeholder-val="{{ false }}">
+                      <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:3px 9px;border:1.5px solid var(--color-neutral-500);color:var(--color-neutral-800);white-space:nowrap">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                        Resolved
+                      </span>
+                    </sc-if>
+                  </td>
+                  <td style="padding:13px 16px">
+                    <button type="button" onClick="{{ e.resolve }}" aria-label="{{ e.aria }}" class="btn btn-secondary" aria-busy="{{ e.busy }}" disabled="{{ e.rowDisabled }}" aria-disabled="{{ e.rowAriaDisabled }}" style="cursor:{{ e.rowCursor }};min-height:44px;display:inline-flex;align-items:center;gap:8px;white-space:nowrap">
+                      <sc-if value="{{ e.busy }}" hint-placeholder-val="{{ false }}">
+                        <span aria-hidden="true" style="width:13px;height:13px;border:2px solid currentColor;border-top-color:transparent;animation:dcspin 700ms linear infinite;display:inline-block"></span>
+                      </sc-if>
+                      {{ e.actionLabel }}
+                    </button>
+                  </td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 style="font-family:var(--font-heading);font-size:18px;font-weight:800;margin:0 0 12px">Sync log</h2>
+        <div style="border:2px solid var(--color-divider);overflow-x:auto">
+          <table class="table" style="width:100%;min-width:760px;border-collapse:collapse">
+            <thead>
+              <tr>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Run</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Source</th>
+                <th scope="col" style="text-align:right;padding:12px 16px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Records</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Result</th>
+                <th scope="col" style="text-align:left;padding:12px 16px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">Retry</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ syncLog }}" as="s" hint-placeholder-count="5">
+                <tr>
+                  <td style="padding:13px 16px;font-size:14px;font-weight:600;white-space:nowrap">{{ s.run }}</td>
+                  <td style="padding:13px 16px;font-size:14px">{{ s.source }}</td>
+                  <td style="padding:13px 16px;font-size:14px;text-align:right;font-variant-numeric:tabular-nums">{{ s.records }}</td>
+                  <td style="padding:13px 16px;font-size:14px">
+                    <span style="display:inline-flex;align-items:center;gap:7px;font-weight:600">
+                      <sc-if value="{{ s.ok }}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></sc-if>
+                      <sc-if value="{{ s.failed }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-700)" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></sc-if>
+                      {{ s.result }}
+                    </span>
+                    <div style="font-size:13px;color:var(--color-neutral-700)">{{ s.detail }}</div>
+                  </td>
+                  <td style="padding:13px 16px;font-size:14px;color:var(--color-neutral-800)">{{ s.retry }}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isReference }}" hint-placeholder-val="{{ false }}">
+      <section aria-labelledby="rf-h" style="animation:dcfade 220ms ease both">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between">
+          <h1 id="rf-h" style="font-family:var(--font-heading);font-weight:800;font-size:clamp(26px,4vw,38px);letter-spacing:-0.02em;margin:0">Reference data</h1>
+          <p style="margin:0;font-size:14px;color:var(--color-neutral-700)" aria-live="polite">{{ refResultCount }}</p>
+        </div>
+        <p style="margin:8px 0 0;font-size:15px;color:var(--color-neutral-800);max-width:70ch">Search Alert Recipients, Leave Policies and Absence Rules — synced from the live Pillar 5 Airtable base. This is a snapshot refreshed on request, not a live query per keystroke (that would mean shipping the Airtable key in this page). Last synced {{ refSyncedAt }}.</p>
+        <div class="hr" style="margin:16px 0 20px"></div>
+
+        <sc-if value="{{ refError }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:0 0 20px;padding:16px 18px;border:2px solid var(--color-accent-700);background:var(--color-accent-200);color:var(--color-accent-800);font-size:14px;font-weight:600">{{ refError }}</p>
+        </sc-if>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;padding:18px;border:2px solid var(--color-divider);background:var(--color-neutral-100);margin-bottom:24px">
+          <div class="field">
+            <label for="rf-search">Search</label>
+            <input id="rf-search" class="input" type="search" aria-label="Search reference data" placeholder="Name, email, rule, threshold…" onChange="{{ onRefQuery }}" value="{{ refQuery }}" style="min-height:44px">
+          </div>
+          <div class="field">
+            <label for="rf-table">Table</label>
+            <select id="rf-table" class="input" aria-label="Filter by table" onChange="{{ onRefTable }}" value="{{ refTable }}" style="cursor:pointer;min-height:44px">
+              <sc-for list="{{ refTableOptions }}" as="o" hint-placeholder-count="4"><option value="{{ o }}">{{ o }}</option></sc-for>
+            </select>
+          </div>
+        </div>
+
+        <sc-if value="{{ refNoResults }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:0;padding:24px;border:2px dashed var(--color-neutral-400);font-size:15px;color:var(--color-neutral-700)">No records match. Clear the search or table filter to widen the results.</p>
+        </sc-if>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <sc-for list="{{ refCards }}" as="r" hint-placeholder-count="6">
+            <div aria-label="{{ r.aria }}" style="border:2px solid var(--color-divider);background:var(--color-bg);padding:18px">
+              <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;justify-content:space-between;margin-bottom:10px">
+                <span style="font-family:var(--font-heading);font-weight:800;font-size:17px">{{ r.primary }}</span>
+                <span style="font-size:12px;font-weight:700;padding:2px 9px;border:1.5px solid var(--color-neutral-700);text-transform:uppercase;letter-spacing:0.06em">{{ r.table }}</span>
+              </div>
+              <dl style="margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 20px">
+                <sc-for list="{{ r.fieldRows }}" as="f" hint-placeholder-count="6">
+                  <div>
+                    <dt style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-neutral-700)">{{ f.k }}</dt>
+                    <dd style="margin:2px 0 0;font-size:14px;word-break:break-word">{{ f.v }}</dd>
+                  </div>
+                </sc-for>
+              </dl>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+  </main>
+
+  <footer style="border-top:2px solid var(--color-divider);padding:18px clamp(16px,4vw,32px);background:var(--color-bg)">
+    <div style="max-width:1440px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px 24px;font-size:13px;color:var(--color-neutral-700)">
+      <span>Intern Absenteeism Monitoring System · Pillar 5 Group</span>
+      <span>Read-only mirror of Airtable. No automated contact with interns.</span>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+const LEVELS = ["Early Warning", "Concern", "Consultation", "Red Flag"];
+const STATUSES = ["New", "Under Review", "Action Required", "Dismissed", "Closed"];
+const ACTIONS = ["No Action", "Continue Monitoring", "Management Discussion", "Schedule Consultation", "Formal Action Review", "Other"];
+
+const CASES = [
+  { id: "P5-1084", name: "Aisha Mbeki", dept: "Design Studio", manager: "Miss Gabby", rule: "3 unexcused absences in 30 days", level: "Concern", count: 3, status: "New", opened: "31 Aug 2026", cycle: "2 Aug – 31 Aug 2026",
+    dates: [ { date: "Mon 3 Aug 2026", type: "Unexcused absence", source: "JB-88421", counts: true }, { date: "Mon 17 Aug 2026", type: "Unexcused absence", source: "JB-89014", counts: true }, { date: "Tue 25 Aug 2026", type: "Late arrival > 4h", source: "JB-89550", counts: true }, { date: "Thu 27 Aug 2026", type: "Approved sick leave", source: "JB-89601", counts: false } ],
+    history: [ { what: "Case opened automatically by rule engine", who: "System", when: "31 Aug 2026, 06:10" } ] },
+  { id: "P5-1081", name: "Thabo Nkosi", dept: "Operations", manager: "Miss Candice", status: "Action Required", opened: "29 Aug 2026", cycle: "31 Jul – 29 Aug 2026",
+    dates: [ { date: "Fri 31 Jul 2026", type: "Unexcused absence", source: "JB-87990", counts: true }, { date: "Mon 3 Aug 2026", type: "Unexcused absence", source: "JB-88130", counts: true }, { date: "Thu 6 Aug 2026", type: "Unexcused absence", source: "JB-88301", counts: true }, { date: "Mon 10 Aug 2026", type: "Unexcused absence", source: "JB-88503", counts: true }, { date: "Wed 12 Aug 2026", type: "Unexcused absence", source: "JB-88702", counts: true }, { date: "Fri 14 Aug 2026", type: "Approved family responsibility leave", source: "JB-88880", counts: false }, { date: "Mon 17 Aug 2026", type: "Unexcused absence", source: "JB-89020", counts: true }, { date: "Wed 19 Aug 2026", type: "Unexcused absence", source: "JB-89188", counts: true }, { date: "Fri 21 Aug 2026", type: "Unexcused absence", source: "JB-89310", counts: true }, { date: "Mon 24 Aug 2026", type: "Unexcused absence", source: "JB-89477", counts: true }, { date: "Wed 26 Aug 2026", type: "Unexcused absence", source: "JB-89592", counts: true } ],
+    history: [ { what: "Case opened automatically by rule engine", who: "System", when: "29 Aug 2026, 06:08" }, { what: "Status set to Action Required", who: "Miss Candice", when: "29 Aug 2026, 11:24" }, { what: "Evidence reviewed against Jibble export", who: "Admin rep (N. Dlamini)", when: "30 Aug 2026, 09:02" } ] },
+  { id: "P5-1083", name: "Yusuf Patel", dept: "Technology", manager: "Miss Gabby", rule: "2 unexcused absences in 30 days", level: "Early Warning", count: 2, status: "New", opened: "30 Aug 2026", cycle: "1 Aug – 30 Aug 2026",
+    dates: [ { date: "Tue 11 Aug 2026", type: "Unexcused absence", source: "JB-88610", counts: true }, { date: "Wed 26 Aug 2026", type: "Unexcused absence", source: "JB-89588", counts: true } ],
+    history: [ { what: "Case opened automatically by rule engine", who: "System", when: "30 Aug 2026, 06:07" } ] },
+  { id: "P5-1082", name: "Anele Jantjies", dept: "Operations", manager: "Miss Candice", rule: "3 unexcused absences in 30 days", level: "Concern", count: 3, status: "Under Review", opened: "29 Aug 2026", cycle: "31 Jul – 29 Aug 2026",
+    dates: [ { date: "Mon 3 Aug 2026", type: "Unexcused absence", source: "JB-88124", counts: true }, { date: "Fri 14 Aug 2026", type: "Unexcused absence", source: "JB-88875", counts: true }, { date: "Wed 26 Aug 2026", type: "Unexcused absence", source: "JB-89590", counts: true } ],
+    history: [ { what: "Case opened automatically by rule engine", who: "System", when: "29 Aug 2026, 06:08" }, { what: "Status set to Under Review", who: "Miss Candice", when: "29 Aug 2026, 15:02" } ] },
+  { id: "P5-1079", name: "Bongi Zulu", dept: "Client Services", manager: "Miss Candice", rule: "2 unexcused absences in 30 days", level: "Early Warning", count: 2, status: "Under Review", opened: "28 Aug 2026", cycle: "30 Jul – 28 Aug 2026",
+    dates: [ { date: "Thu 6 Aug 2026", type: "Unexcused absence", source: "JB-88298", counts: true }, { date: "Tue 25 Aug 2026", type: "Late arrival > 4h", source: "JB-89556", counts: true } ],
+    history: [ { what: "Case opened automatically by rule engine", who: "System", when: "28 Aug 2026, 06:06" }, { what: "Status set to Under Review", who: "Miss Gabby", when: "28 Aug 2026, 10:18" } ] },
+  { id: "P5-1078", name: "Lerato Sithole", dept: "Client Services", manager: "Miss Gabby", rule: "2 unexcused absences in 30 days", level: "Early Warning", count: 2, status: "Under Review", opened: "27 Aug 2026", cycle: "29 Jul – 27 Aug 2026",
+    dates: [ { date: "Thu 6 Aug 2026", type: "Unexcused absence", source: "JB-88290", counts: true }, { date: "Thu 20 Aug 2026", type: "Unexcused absence", source: "JB-89240", counts: true } ],
+    history: [ { what: "Case opened automatically by rule engine", who: "System", when: "27 Aug 2026, 06:07" }, { what: "Status set to Under Review", who: "Miss Gabby", when: "27 Aug 2026, 14:40" } ] },
+  { id: "P5-1075", name: "Sipho Radebe", dept: "Finance", manager: "Miss Candice", rule: "4 unexcused absences in 30 days", level: "Consultation", count: 4, status: "Under Review", opened: "24 Aug 2026", cycle: "26 Jul – 24 Aug 2026",
+    dates: [ { date: "Tue 28 Jul 2026", type: "Unexcused absence", source: "JB-87720", counts: true }, { date: "Wed 5 Aug 2026", type: "Unexcused absence", source: "JB-88210", counts: true }, { date: "Fri 14 Aug 2026", type: "Unexcused absence", source: "JB-88870", counts: true }, { date: "Fri 21 Aug 2026", type: "Late arrival > 4h", source: "JB-89302", counts: true } ],
+    history: [ { what: "Case opened automatically by rule engine", who: "System", when: "24 Aug 2026, 06:09" }, { what: "Status set to Under Review", who: "Miss Candice", when: "25 Aug 2026, 08:55" } ] },
+  { id: "P5-1071", name: "Naledi Khumalo", dept: "Design Studio", manager: "Miss Gabby", rule: "2 unexcused absences in 30 days", level: "Early Warning", count: 2, status: "New", opened: "22 Aug 2026", cycle: "24 Jul – 22 Aug 2026",
+    dates: [ { date: "Mon 27 Jul 2026", type: "Unexcused absence", source: "JB-87680", counts: true }, { date: "Mon 18 Aug 2026", type: "Unexcused absence", source: "JB-89100", counts: true } ],
+    history: [ { what: "Case opened automatically by rule engine", who: "System", when: "22 Aug 2026, 06:06" } ] },
+  { id: "P5-1066", name: "Kabelo Mahlangu", dept: "Operations", manager: "Miss Candice", rule: "3 unexcused absences in 30 days", level: "Concern", count: 3, status: "Action Required", opened: "18 Aug 2026", cycle: "20 Jul – 18 Aug 2026",
+    dates: [ { date: "Wed 22 Jul 2026", type: "Unexcused absence", source: "JB-87410", counts: true }, { date: "Tue 28 Jul 2026", type: "Unexcused absence", source: "JB-87740", counts: true }, { date: "Thu 6 Aug 2026", type: "Unexcused absence", source: "JB-88295", counts: true }, { date: "Wed 12 Aug 2026", type: "Unexcused absence", source: "JB-88710", counts: true }, { date: "Mon 17 Aug 2026", type: "Unexcused absence", source: "JB-89022", counts: true } ],
+    history: [ { what: "Case opened automatically by rule engine", who: "System", when: "18 Aug 2026, 06:11" }, { what: "Status set to Action Required", who: "Miss Candice", when: "19 Aug 2026, 10:12" } ] },
+  { id: "P5-1060", name: "Zanele Botha", dept: "Client Services", manager: "Miss Gabby", status: "Under Review", opened: "14 Aug 2026", cycle: "16 Jul – 14 Aug 2026",
+    dates: [ { date: "Thu 16 Jul 2026", type: "Unexcused absence", source: "JB-87050", counts: true }, { date: "Mon 20 Jul 2026", type: "Unexcused absence", source: "JB-87322", counts: true }, { date: "Thu 23 Jul 2026", type: "Unexcused absence", source: "JB-87480", counts: true }, { date: "Tue 28 Jul 2026", type: "Unexcused absence", source: "JB-87735", counts: true }, { date: "Mon 3 Aug 2026", type: "Unexcused absence", source: "JB-88118", counts: true }, { date: "Wed 5 Aug 2026", type: "Public holiday", source: "JB-88205", counts: false }, { date: "Tue 11 Aug 2026", type: "Unexcused absence", source: "JB-88602", counts: true }, { date: "Thu 13 Aug 2026", type: "Unexcused absence", source: "JB-88790", counts: true } ],
+    history: [ { what: "Case opened automatically by rule engine", who: "System", when: "14 Aug 2026, 06:05" }, { what: "Status set to Under Review", who: "Miss Gabby", when: "14 Aug 2026, 16:31" } ] },
+  { id: "P5-1052", name: "Farai Moyo", dept: "Technology", manager: "Miss Candice", rule: "3 unexcused absences in 30 days", level: "Concern", count: 3, status: "Closed", opened: "9 Aug 2026", cycle: "11 Jul – 9 Aug 2026",
+    dates: [ { date: "Mon 13 Jul 2026", type: "Unexcused absence", source: "JB-86780", counts: true }, { date: "Tue 21 Jul 2026", type: "Unexcused absence", source: "JB-87360", counts: true }, { date: "Wed 5 Aug 2026", type: "Unexcused absence", source: "JB-88220", counts: true } ],
+    history: [ { what: "Case opened automatically by rule engine", who: "System", when: "9 Aug 2026, 06:09" }, { what: "Management discussion held; decision recorded", who: "Miss Candice", when: "12 Aug 2026, 09:45" }, { what: "Case closed", who: "Miss Candice", when: "12 Aug 2026, 09:47" } ] },
+  { id: "P5-1049", name: "Ruth Adeyemi", dept: "Technology", manager: "Miss Gabby", rule: "2 unexcused absences in 30 days", level: "Early Warning", count: 2, status: "Dismissed", opened: "6 Aug 2026", cycle: "8 Jul – 6 Aug 2026",
+    dates: [ { date: "Thu 16 Jul 2026", type: "Unexcused absence", source: "JB-87055", counts: true }, { date: "Mon 3 Aug 2026", type: "Unexcused absence", source: "JB-88120", counts: true } ],
+    history: [ { what: "Case opened automatically by rule engine", who: "System", when: "6 Aug 2026, 06:07" }, { what: "Dismissed — both dates covered by retroactive leave approval", who: "Admin rep (N. Dlamini)", when: "7 Aug 2026, 08:20" } ] },
+  { id: "P5-1044", name: "Mpho Dube", dept: "Finance", manager: "Miss Candice", rule: "4 unexcused absences in 30 days", level: "Consultation", count: 4, status: "Action Required", opened: "3 Aug 2026", cycle: "5 Jul – 3 Aug 2026",
+    dates: [ { date: "Tue 7 Jul 2026", type: "Unexcused absence", source: "JB-86420", counts: true }, { date: "Mon 13 Jul 2026", type: "Unexcused absence", source: "JB-86790", counts: true }, { date: "Fri 24 Jul 2026", type: "Unexcused absence", source: "JB-87510", counts: true }, { date: "Fri 31 Jul 2026", type: "Late arrival > 4h", source: "JB-87995", counts: true } ],
+    history: [ { what: "Case opened automatically by rule engine", who: "System", when: "3 Aug 2026, 06:10" }, { what: "Status set to Action Required", who: "Miss Candice", when: "4 Aug 2026, 13:05" } ] }
+];
+
+const CYCLES = [
+  { label: "Mar–Apr", value: 14 }, { label: "Apr–May", value: 19 }, { label: "May–Jun", value: 16 },
+  { label: "Jun–Jul", value: 22 }, { label: "Jul–Aug", value: 26 }, { label: "Aug–Sep", value: 21 }
+];
+
+const EXCEPTIONS = [
+  { id: "AT-rec9182", name: "Kabelo Mahlangu", date: "26 Aug 2026", issue: "Clock-in without matching clock-out", state: "Pending Review" },
+  { id: "AT-rec9174", name: "Unmatched intern ID (JB-4471)", date: "25 Aug 2026", issue: "No Airtable intern record for Jibble ID", state: "Data Error" },
+  { id: "AT-rec9160", name: "Lerato Sithole", date: "23 Aug 2026", issue: "Absence type field empty", state: "Pending Review" },
+  { id: "AT-rec9143", name: "Sipho Radebe", date: "21 Aug 2026", issue: "Duplicate record from re-run", state: "Data Error" },
+  { id: "AT-rec9128", name: "Naledi Khumalo", date: "19 Aug 2026", issue: "Leave approval received after classification", state: "Pending Review" }
+];
+
+const SYNC_LOG = [
+  { run: "2 Sep 2026, 06:05", source: "Jibble → Airtable", records: 412, result: "Completed with warnings", detail: "2 records could not be classified", ok: true, retry: "Not required" },
+  { run: "1 Sep 2026, 06:05", source: "Jibble → Airtable", records: 408, result: "Completed", detail: "No exceptions", ok: true, retry: "—" },
+  { run: "31 Aug 2026, 06:05", source: "Jibble → Airtable", records: 0, result: "Failed", detail: "API rate limit (429) at page 3 of 5", ok: false, retry: "Retried 06:35 — succeeded" },
+  { run: "30 Aug 2026, 06:05", source: "Jibble → Airtable", records: 399, result: "Completed", detail: "No exceptions", ok: true, retry: "—" },
+  { run: "29 Aug 2026, 06:05", source: "Jibble → Airtable", records: 401, result: "Completed with warnings", detail: "1 duplicate record quarantined", ok: true, retry: "Not required" }
+];
+
+const THRESHOLDS = [
+  { level: "Red Flag", min: 10 },
+  { level: "Consultation", min: 7 },
+  { level: "Concern", min: 5 },
+  { level: "Early Warning", min: 2 }
+];
+
+function levelFor(count) {
+  const hit = THRESHOLDS.find(t => count >= t.min);
+  return hit ? hit.level : "Early Warning";
+}
+
+function ruleFor(count) {
+  const hit = THRESHOLDS.find(t => count >= t.min) || THRESHOLDS[3];
+  return hit.min + " qualifying absences in 30 days";
+}
+
+function marks(step) {
+  return [1, 2, 3, 4].map(i => ({ on: i <= step, off: i > step }));
+}
+
+class Component extends DCLogic {
+  state = {
+    screen: "overview",
+    caseId: null,
+    fStatus: "All statuses",
+    fDept: "All departments",
+    fLevel: "All levels",
+    edits: {},
+    draft: null,
+    notesTouched: false,
+    saving: false,
+    savedMsg: "",
+    resolving: null,
+    resolved: {},
+    width: 1440,
+    refRecords: [],
+    refLoaded: false,
+    refError: "",
+    refSyncedAt: "",
+    refQuery: "",
+    refTable: "All tables"
+  };
+
+  rootRef = React.createRef();
+
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    this._ro = new ResizeObserver(entries => {
+      const w = Math.round(entries[0].contentRect.width);
+      this.setState(s => (s.width === w ? null : { width: w }));
+    });
+    this._ro.observe(el);
+    this.loadReferenceData();
+  }
+
+  // Reference data (Alert Recipients / Leave Policies / Absence Rules) is a
+  // snapshot synced from the real Pillar 5 Airtable base into this
+  // artifact's own `db` store — never a live browser call to Airtable
+  // itself, which would require shipping the API key in this page's
+  // source. The snapshot is refreshed from the terminal on request; see
+  // docs/04-airtable-api-reference.md in the repo.
+  loadReferenceData = async () => {
+    try {
+      if (!window.claude || typeof window.claude.use !== "function") {
+        this.setState({ refLoaded: true, refError: "Live search isn't available in this preview." });
+        return;
+      }
+      const db = await window.claude.use("db");
+      if (!db) {
+        this.setState({ refLoaded: true, refError: "Live search isn't available in this view." });
+        return;
+      }
+      const toRecords = (snap, table, primaryField) => snap.docs.map(d => {
+        const data = d.data() || {};
+        const fields = data.fields || {};
+        return { id: d.id, table, primary: fields[primaryField] || "(untitled)", fields };
+      });
+      const [recipientsSnap, policiesSnap, rulesSnap, metaSnap] = await Promise.all([
+        db.collection("alert_recipients").get(),
+        db.collection("leave_policies").get(),
+        db.collection("absence_rules").get(),
+        db.doc("meta/sync").get()
+      ]);
+      const records = [
+        ...toRecords(recipientsSnap, "Alert Recipients", "Recipient Name"),
+        ...toRecords(policiesSnap, "Leave Policies", "Policy Name"),
+        ...toRecords(rulesSnap, "Absence Rules", "Rule Name")
+      ];
+      const meta = metaSnap.exists ? metaSnap.data() : null;
+      this.setState({ refRecords: records, refLoaded: true, refSyncedAt: (meta && meta.syncedAt) || "" });
+    } catch (err) {
+      this.setState({ refLoaded: true, refError: "Couldn't load reference data: " + (err && err.message ? err.message : String(err)) });
+    }
+  };
+
+  componentWillUnmount() {
+    if (this._ro) this._ro.disconnect();
+  }
+
+  caseById(id) { return CASES.find(c => c.id === id); }
+
+  merged(c) {
+    const e = this.state.edits[c.id] || {};
+    const count = c.dates.filter(d => d.counts).length;
+    return Object.assign({}, c, { count, level: levelFor(count), rule: ruleFor(count) }, e);
+  }
+
+  go = (screen) => () => this.setState({ screen, savedMsg: "" });
+
+  openCase = (id) => () => {
+    const c = this.merged(this.caseById(id));
+    this.setState({
+      screen: "detail", caseId: id, notesTouched: false, savedMsg: "", saving: false,
+      draft: { status: c.status, action: c.action || "No Action", notes: c.notes || "" }
+    });
+  };
+
+  setDraft(patch) { this.setState(s => ({ draft: Object.assign({}, s.draft, patch), savedMsg: "" })); }
+
+  notesProblem(notes) {
+    const v = (notes || "").trim();
+    if (!v) return "Decision notes are required before saving.";
+    if (v.length < 15) return "Add a little more detail — at least 15 characters.";
+    return "";
+  }
+
+  submit = (ev) => {
+    if (ev && ev.preventDefault) ev.preventDefault();
+    const d = this.state.draft || {};
+    const problem = this.notesProblem(d.notes);
+    if (problem) { this.setState({ notesTouched: true }); return; }
+    this.setState({ saving: true });
+    setTimeout(() => {
+      const id = this.state.caseId;
+      this.setState(s => ({
+        saving: false,
+        savedMsg: "Decision saved to Airtable · " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        edits: Object.assign({}, s.edits, { [id]: { status: d.status, action: d.action, notes: d.notes } })
+      }));
+    }, 900);
+  };
+
+  resolveException = (id) => () => {
+    this.setState({ resolving: id });
+    setTimeout(() => this.setState(s => ({ resolving: null, resolved: Object.assign({}, s.resolved, { [id]: true }) })), 900);
+  };
+
+  renderVals() {
+    const s = this.state;
+    const all = CASES.map(c => this.merged(c));
+    const open = all.filter(c => c.status !== "Closed" && c.status !== "Dismissed");
+
+    const levelStats = LEVELS.map((label, i) => {
+      const count = open.filter(c => c.level === label).length;
+      return {
+        label, count, marks: marks(i + 1),
+        note: ["2–4 qualifying absences", "5–6 qualifying absences", "7–9 qualifying absences", "10 or more — review promptly"][i],
+        aria: count + " open " + label + " cases. View filtered list.",
+        go: () => this.setState({ screen: "cases", fLevel: label, fStatus: "All statuses", fDept: "All departments" })
+      };
+    });
+
+    const depts = [...new Set(CASES.map(c => c.dept))];
+    const deptCounts = depts.map(name => {
+      const rows = open.filter(c => c.dept === name);
+      return { name, total: rows.length, red: rows.filter(c => c.level === "Red Flag").length };
+    }).filter(d => d.total > 0).sort((a, b) => b.total - a.total);
+    const deptMax = Math.max(1, ...deptCounts.map(d => d.total));
+    const deptBars = deptCounts.map(d => ({
+      name: d.name, total: d.total,
+      wBase: ((d.total - d.red) / deptMax * 100).toFixed(1) + "%",
+      wRed: (d.red / deptMax * 100).toFixed(1) + "%",
+      tip: d.name + ": " + d.total + " open — " + (d.total - d.red) + " Early Warning to Consultation, " + d.red + " Red Flag"
+    }));
+
+    const cycMax = Math.max(...CYCLES.map(c => c.value));
+    const cycAvg = CYCLES.reduce((a, c) => a + c.value, 0) / CYCLES.length;
+    const cycleBars = CYCLES.map(c => ({
+      label: c.label, value: c.value,
+      h: (c.value / cycMax * 150).toFixed(0) + "px",
+      tip: "Cycle " + c.label + ": " + c.value + " qualifying absences across all departments"
+    }));
+
+    const fs = s.fStatus, fd = s.fDept, fl = s.fLevel;
+    const visible = all.filter(c =>
+      (fs === "All statuses" || c.status === fs) &&
+      (fd === "All departments" || c.dept === fd) &&
+      (fl === "All levels" || c.level === fl)
+    );
+
+    const decorate = c => {
+      const step = LEVELS.indexOf(c.level) + 1;
+      const isRed = c.level === "Red Flag";
+      return Object.assign({}, c, {
+        dates: (c.dates || []).map(d => Object.assign({}, d, { counts: !!d.counts, excluded: !d.counts })),
+        cardSummary: "Rule: " + (THRESHOLDS.find(t => c.count >= t.min) || THRESHOLDS[3]).min + "+ in 30 days · " + c.count + " recorded",
+        step, marks: marks(step), isRed, notRed: !isRed,
+        edge: isRed ? "4px solid var(--color-accent)" : "4px solid transparent",
+        edgeCard: isRed ? "6px solid var(--color-accent)" : "2px solid var(--color-divider)",
+        aria: "Open case " + c.id + " for " + c.name + ", " + c.level + ", status " + c.status,
+        open: this.openCase(c.id)
+      });
+    };
+
+    const d = s.draft || {};
+    const active = s.caseId ? decorate(this.merged(this.caseById(s.caseId))) : null;
+    const notesErr = s.notesTouched ? this.notesProblem(d.notes) : "";
+
+    const statusChoices = STATUSES.map(label => {
+      const on = d.status === label;
+      return {
+        label, pressed: on ? "true" : "false", aria: "Set case status to " + label,
+        bg: on ? "var(--color-neutral-900)" : "transparent",
+        fg: on ? "var(--color-neutral-100)" : "var(--color-text)",
+        pick: () => this.setDraft({ status: label })
+      };
+    });
+
+    const exceptions = EXCEPTIONS.map(e => {
+      const done = s.resolved[e.id];
+      return Object.assign({}, e, {
+        isError: !done && e.state === "Data Error",
+        isPending: !done || e.state === "Pending Review" && !done,
+        busy: s.resolving === e.id,
+        actionLabel: done ? "Resolved" : (s.resolving === e.id ? "Working…" : (e.state === "Data Error" ? "Re-run mapping" : "Mark reviewed")),
+        aria: (e.state === "Data Error" ? "Re-run mapping for record " : "Mark record reviewed: ") + e.id,
+        resolve: done ? () => {} : this.resolveException(e.id)
+      });
+    }).map(e => {
+      const done = !!s.resolved[e.id];
+      return Object.assign({}, e, {
+        isError: !done && e.state === "Data Error",
+        isPending: !done && e.state === "Pending Review",
+        isResolved: done,
+        rowCursor: done ? "default" : "pointer",
+        rowDisabled: done ? true : undefined,
+        rowAriaDisabled: done ? "true" : "false"
+      });
+    });
+
+    const pendingCount = EXCEPTIONS.filter(e => !s.resolved[e.id] && e.state === "Pending Review").length;
+    const errorCount = EXCEPTIONS.filter(e => !s.resolved[e.id] && e.state === "Data Error").length;
+
+    const refQ = (s.refQuery || "").trim().toLowerCase();
+    const refFiltered = s.refRecords.filter(r => {
+      if (s.refTable !== "All tables" && r.table !== s.refTable) return false;
+      if (!refQ) return true;
+      const hay = (r.primary + " " + Object.values(r.fields).map(v =>
+        Array.isArray(v) ? v.join(" ") : (v && typeof v === "object" ? (v.name || JSON.stringify(v)) : String(v))
+      ).join(" ")).toLowerCase();
+      return hay.includes(refQ);
+    });
+    const primaryFieldFor = { "Alert Recipients": "Recipient Name", "Leave Policies": "Policy Name", "Absence Rules": "Rule Name" };
+    const refCards = refFiltered.map(r => ({
+      key: r.table + ":" + r.id,
+      table: r.table,
+      primary: r.primary,
+      aria: r.table + " record: " + r.primary,
+      fieldRows: Object.entries(r.fields).filter(([k]) => k !== primaryFieldFor[r.table]).map(([k, v]) => ({
+        k,
+        v: Array.isArray(v) ? v.join(", ") : (v && typeof v === "object" ? (v.name || JSON.stringify(v)) : String(v))
+      }))
+    }));
+
+    const navItems = [
+      { key: "overview", label: "Overview", badge: false },
+      { key: "cases", label: "Alert cases", badge: String(open.length) },
+      { key: "reference", label: "Reference data", badge: false },
+      { key: "quality", label: "Data quality", badge: (pendingCount + errorCount) ? String(pendingCount + errorCount) : false }
+    ].map(t => ({
+      label: t.label, badge: t.badge,
+      aria: "Go to " + t.label,
+      current: (s.screen === t.key || (t.key === "cases" && s.screen === "detail")) ? "page" : undefined,
+      dot: (s.screen === t.key || (t.key === "cases" && s.screen === "detail")) ? "var(--color-accent)" : "transparent",
+      go: this.go(t.key)
+    }));
+
+    return {
+      navItems,
+      isOverview: s.screen === "overview", isCases: s.screen === "cases",
+      isDetail: s.screen === "detail" && !!active, isQuality: s.screen === "quality",
+      isReference: s.screen === "reference",
+      refQuery: s.refQuery, onRefQuery: e => this.setState({ refQuery: e.target.value }),
+      refTable: s.refTable, onRefTable: e => this.setState({ refTable: e.target.value }),
+      refTableOptions: ["All tables", "Alert Recipients", "Leave Policies", "Absence Rules"],
+      refCards, refResultCount: refCards.length + " of " + s.refRecords.length + " records",
+      refNoResults: s.refLoaded && refCards.length === 0 && !s.refError,
+      refError: s.refError,
+      refSyncedAt: s.refSyncedAt || (s.refLoaded ? "unknown" : "loading…"),
+      goCases: this.go("cases"), goExceptions: this.go("quality"),
+      lastSync: "2 Sep 2026, 06:05", syncedRecords: 412,
+      hasSyncIssues: (pendingCount + errorCount) > 0,
+      syncIssueText: (pendingCount + errorCount) + " records need review",
+      currentCycle: "4 Aug – 2 Sep 2026", openTotal: open.length,
+      levelStats, deptBars, cycleBars,
+      cycleAvgLabel: "6-cycle average (" + cycAvg.toFixed(1) + ")",
+      avgLine: (cycAvg / cycMax * 150).toFixed(0) + "px",
+      priorityCases: all.filter(c => c.status === "New" || c.status === "Action Required").slice(0, 4).map(decorate),
+      statusOptions: ["All statuses", ...STATUSES],
+      deptOptions: ["All departments", ...depts],
+      levelOptions: ["All levels", ...LEVELS],
+      fStatus: fs, fDept: fd, fLevel: fl,
+      onStatus: e => this.setState({ fStatus: e.target.value }),
+      onDept: e => this.setState({ fDept: e.target.value }),
+      onLevel: e => this.setState({ fLevel: e.target.value }),
+      clearFilters: () => this.setState({ fStatus: "All statuses", fDept: "All departments", fLevel: "All levels" }),
+      rootRef: this.rootRef,
+      levelCols: s.width < 880 ? "repeat(2,1fr)" : "repeat(4,1fr)",
+      isNarrow: s.width < 1000,
+      tableDisplay: s.width < 1000 ? "none" : "block",
+      visibleCases: visible.map(decorate),
+      noResults: visible.length === 0,
+      resultCount: visible.length + " of " + all.length + " cases shown",
+      dCase: active || {},
+      statusChoices, actionOptions: ACTIONS,
+      dAction: d.action || "No Action", dNotes: d.notes || "",
+      onAction: e => this.setDraft({ action: e.target.value }),
+      onNotes: e => this.setDraft({ notes: e.target.value }),
+      onNotesBlur: () => this.setState({ notesTouched: true }),
+      notesError: notesErr,
+      notesInvalid: notesErr ? "true" : "false",
+      notesBorder: notesErr ? "var(--color-accent-700)" : "var(--color-neutral-400)",
+      onSubmit: this.submit,
+      saving: s.saving, saveLabel: s.saving ? "Saving decision…" : "Save decision",
+      savedMsg: s.savedMsg,
+      resetDraft: () => { if (s.caseId) this.openCase(s.caseId)(); },
+      qualityStats: [
+        { value: pendingCount, label: "Pending Review", note: "Awaiting a human classification" },
+        { value: errorCount, label: "Data Error", note: "Mapping or duplication faults" },
+        { value: "1", label: "Failed sync run (30 days)", note: "Retried automatically and cleared" }
+      ],
+      exceptions, syncLog: SYNC_LOG.map(l => Object.assign({}, l, { failed: !l.ok }))
+    };
+  }
+}
+
+</script>
+</body>
+</html>

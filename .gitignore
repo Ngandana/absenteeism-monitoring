@@ -1,7 +1,8 @@
 # Environment variables and secrets
 .env
 .env.*
-!config/.env.example
+!Backend/config/.env.example
+!Frontend/.env.example
 *.pem
 *.key
 credentials.json
