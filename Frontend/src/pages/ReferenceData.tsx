@@ -7,6 +7,7 @@ const TABLES: { key: ReferenceTableKey; label: string }[] = [
   { key: 'alert-recipients', label: 'Alert Recipients' },
   { key: 'leave-policies', label: 'Leave Policies' },
   { key: 'absence-rules', label: 'Absence Rules' },
+  { key: 'interns', label: 'Interns' },
 ]
 
 type Loaded = { table: string; records: ReferenceRecord[] }
@@ -111,7 +112,7 @@ export function ReferenceData() {
             </div>
             <dl className="m-0 grid grid-cols-1 gap-x-5 gap-y-2.5 sm:grid-cols-2">
               {Object.entries(r.fields)
-                .filter(([k]) => k !== 'Recipient Name' && k !== 'Policy Name' && k !== 'Rule Name')
+                .filter(([k]) => k !== 'Recipient Name' && k !== 'Policy Name' && k !== 'Rule Name' && k !== 'Intern Name')
                 .map(([k, v]) => (
                   <div key={k}>
                     <dt className="text-[11px] tracking-[0.08em] text-neutral-700 uppercase">{k}</dt>

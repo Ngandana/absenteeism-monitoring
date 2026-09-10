@@ -67,10 +67,10 @@ export default function App() {
       <header className="sticky top-0 z-20 border-b-2 border-divider bg-bg">
         <div className="mx-auto flex w-full max-w-[1440px] flex-wrap items-center justify-between gap-4 px-4 py-3.5 sm:px-8">
           <div className="flex min-w-0 items-center gap-3.5">
-            <span aria-hidden="true" className="inline-flex h-8 w-8 flex-none bg-accent" />
-            <div className="min-w-0">
+            <img src="/pillar5-logo.png" alt="Pillar 5 Group" className="h-11 w-auto flex-none" />
+            <div className="min-w-0 border-l-2 border-divider pl-3.5">
               <div className="font-heading text-[17px] leading-tight font-extrabold tracking-tight">Intern Absenteeism Monitoring</div>
-              <div className="text-[13px] leading-tight text-neutral-700">Pillar 5 Group · Airtable ← Jibble</div>
+              <div className="text-[13px] leading-tight text-neutral-700">Airtable ← Jibble</div>
             </div>
           </div>
           <div className="flex min-h-11 items-center gap-2.5 border-2 border-divider px-3 py-1.5">

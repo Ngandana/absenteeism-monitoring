@@ -55,7 +55,7 @@ export type SyncRun = {
   retry: string
 }
 
-export type ReferenceTableKey = 'alert-recipients' | 'leave-policies' | 'absence-rules'
+export type ReferenceTableKey = 'alert-recipients' | 'leave-policies' | 'absence-rules' | 'interns'
 
 export type ReferenceRecord = {
   id: string

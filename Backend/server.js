@@ -57,6 +57,10 @@ const REFERENCE_TABLES = {
   'alert-recipients': { tableId: TABLES.ALERT_RECIPIENTS, primaryField: 'Recipient Name' },
   'leave-policies': { tableId: TABLES.LEAVE_POLICIES, primaryField: 'Policy Name' },
   'absence-rules': { tableId: TABLES.ABSENCE_RULES, primaryField: 'Rule Name' },
+  // Interns is write-restricted (see lib/airtable-client.js) but reads are
+  // always fine — this exposes whatever real Intern records exist without
+  // needing write access.
+  interns: { tableId: TABLES.INTERNS, primaryField: 'Intern Name' },
 };
 
 let airtableClient = null;
